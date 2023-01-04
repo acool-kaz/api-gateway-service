@@ -35,9 +35,11 @@ func (h *Handler) InitRoutes() http.Handler {
 	})
 
 	router.Route("/post", func(post chi.Router) {
-		post.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			// resp, err := h.postClient.Client.Read(r.Context(), &post_crud_pb.ReadRequest{})
-		})
+		post.Get("", h.getAllPosts)
+		post.Post("", h.createPost)
+		post.Get("/{post_id}", h.getPostById)
+		post.Delete("/{post_id}", h.deletePostById)
+		post.Patch("/{post_id}", h.updatePostById)
 	})
 
 	return router
