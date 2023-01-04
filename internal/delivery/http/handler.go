@@ -29,21 +29,27 @@ func (h *Handler) InitRoutes() http.Handler {
 
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
+	router.Use(func(h http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			h.ServeHTTP(w, r)
+		})
+	})
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "hello this is root of api gateway service")
 	})
 
 	router.Route("/post", func(post chi.Router) {
-		post.Get("", h.getAllPosts)
-		post.Post("", h.createPost)
+		post.Get("/", h.getAllPosts)
+		post.Post("/", h.createPost)
 		post.Get("/{post_id}", h.getPostById)
 		post.Delete("/{post_id}", h.deletePostById)
 		post.Patch("/{post_id}", h.updatePostById)
 	})
 
 	router.Route("/parser", func(parser chi.Router) {
-		parser.Get("", h.parserHandler)
+		parser.Get("/", h.parserHandler)
 	})
 
 	return router
