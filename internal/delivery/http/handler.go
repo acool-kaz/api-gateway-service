@@ -42,5 +42,9 @@ func (h *Handler) InitRoutes() http.Handler {
 		post.Patch("/{post_id}", h.updatePostById)
 	})
 
+	router.Route("/parser", func(parser chi.Router) {
+		parser.Get("", h.parserHandler)
+	})
+
 	return router
 }
