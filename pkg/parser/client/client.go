@@ -23,7 +23,7 @@ func InitParserClientConfig(host, port string) *ParserClientConfig {
 }
 
 type ParserClient struct {
-	client parser_pb.ParserServiceClient
+	Client parser_pb.ParserServiceClient
 }
 
 func InitParserClient(cfg *ParserClientConfig) (*ParserClient, error) {
@@ -35,6 +35,6 @@ func InitParserClient(cfg *ParserClientConfig) (*ParserClient, error) {
 	}
 
 	return &ParserClient{
-		client: parser_pb.NewParserServiceClient(conn),
+		Client: parser_pb.NewParserServiceClient(conn),
 	}, nil
 }

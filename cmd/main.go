@@ -13,7 +13,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app := app.InitApp(cfg)
+	app, err := app.InitApp(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	app.Run()
 }

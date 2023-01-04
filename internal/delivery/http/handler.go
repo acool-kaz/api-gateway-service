@@ -16,9 +16,12 @@ type Handler struct {
 	postClient   *post_crud.PostCRUDClient
 }
 
-func InitHandler() *Handler {
+func InitHandler(parserClient *parser.ParserClient, postClient *post_crud.PostCRUDClient) *Handler {
 	log.Println("init http handler")
-	return &Handler{}
+	return &Handler{
+		parserClient: parserClient,
+		postClient:   postClient,
+	}
 }
 
 func (h *Handler) InitRoutes() http.Handler {
@@ -29,6 +32,12 @@ func (h *Handler) InitRoutes() http.Handler {
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "hello this is root of api gateway service")
+	})
+
+	router.Route("/post", func(post chi.Router) {
+		post.Get("/", func(w http.ResponseWriter, r *http.Request) {
+			// resp, err := h.postClient.Client.Read(r.Context(), &post_crud_pb.ReadRequest{})
+		})
 	})
 
 	return router

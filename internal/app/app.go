@@ -12,6 +12,8 @@ import (
 
 	"github.com/acool-kaz/api-gateway-service/internal/config"
 	httpHandler "github.com/acool-kaz/api-gateway-service/internal/delivery/http"
+	parser "github.com/acool-kaz/api-gateway-service/pkg/parser/client"
+	post_crud "github.com/acool-kaz/api-gateway-service/pkg/post_crud/client"
 )
 
 type app struct {
@@ -21,15 +23,27 @@ type app struct {
 	httpHandler *httpHandler.Handler
 }
 
-func InitApp(cfg *config.Config) *app {
+func InitApp(cfg *config.Config) (*app, error) {
 	log.Println("init app")
 
-	httpHandler := httpHandler.InitHandler()
+	parserCfg := parser.InitParserClientConfig(cfg.ParserServiceClient.Host, cfg.ParserServiceClient.Port)
+	parserClient, err := parser.InitParserClient(parserCfg)
+	if err != nil {
+		return nil, fmt.Errorf("init app: %w", err)
+	}
+
+	postCRUDCfg := post_crud.InitPostCRUDClientConfig(cfg.PostCRUDServiceClient.Host, cfg.PostCRUDServiceClient.Port)
+	postCRUDClient, err := post_crud.InitPostCRUDClient(postCRUDCfg)
+	if err != nil {
+		return nil, fmt.Errorf("init app: %w", err)
+	}
+
+	httpHandler := httpHandler.InitHandler(parserClient, postCRUDClient)
 
 	return &app{
 		cfg:         cfg,
 		httpHandler: httpHandler,
-	}
+	}, nil
 }
 
 func (a *app) Run() {

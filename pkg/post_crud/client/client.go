@@ -23,7 +23,7 @@ func InitPostCRUDClientConfig(host, port string) *PostCRUDClientConfig {
 }
 
 type PostCRUDClient struct {
-	client post_crud_pb.PostCRUDServiceClient
+	Client post_crud_pb.PostCRUDServiceClient
 }
 
 func InitPostCRUDClient(cfg *PostCRUDClientConfig) (*PostCRUDClient, error) {
@@ -35,6 +35,6 @@ func InitPostCRUDClient(cfg *PostCRUDClientConfig) (*PostCRUDClient, error) {
 	}
 
 	return &PostCRUDClient{
-		client: post_crud_pb.NewPostCRUDServiceClient(conn),
+		Client: post_crud_pb.NewPostCRUDServiceClient(conn),
 	}, nil
 }
