@@ -1,0 +1,15 @@
+{
+    "http": {
+        "port": "8083",
+        "read": 30,
+        "write": 30
+    },
+    "post_crud_service_client": {
+        "host": "localhost",
+        "port": "8084"
+    },
+    "parser_service_client": {
+        "host": "localhost",
+        "port": "8082"
+    }
+}
